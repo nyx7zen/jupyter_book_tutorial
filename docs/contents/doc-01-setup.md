@@ -403,3 +403,73 @@ jobs:
 | `jupyter-book==1.0.4` | v1 버전 고정 (미지정 시 v2 설치됨) |
 | `actions/checkout@v4` | 최신 checkout action |
 | `actions/setup-python@v5` | 최신 Python setup action |
+
+---
+
+## 11. 일상 워크플로우
+
+문서를 수정하거나 새 문서를 추가할 때마다 아래 순서로 진행합니다.
+
+### 11.1 문서 수정 / 노트북 작업
+
+VSCode 에서 `.md` 파일 또는 `.ipynb` 파일을 편집합니다.
+
+- 마크다운 문서: 내용 수정 후 저장
+- 노트북: 셀 실행 후 `Ctrl+S` 로 출력 포함 저장
+
+### 11.2 로컬 빌드 확인
+
+#### Windows + WinPython
+
+```cmd
+cd D:\projects\myrepo
+jupyter-book build docs/
+start docs\_build\html\index.html
+```
+
+#### WSL + Anaconda
+
+```bash
+conda activate pytorch_env
+cd ~/projects/myrepo
+jupyter-book build docs/
+explorer.exe docs/_build/html/index.html
+```
+
+### 11.3 clean 옵션 사용 시점
+
+`jupyter-book clean docs/` 는 `docs/_build/` 폴더를 삭제하여 처음부터 다시 빌드합니다.
+
+| 상황 | clean 필요 여부 |
+|------|----------------|
+| 단순 내용 수정 (`.md`, `.ipynb`) | 불필요 |
+| `_toc.yml` 구조 변경 | 권장 |
+| `_config.yml` 변경 | 권장 |
+| 파일 삭제 또는 이름 변경 | 권장 |
+| 빌드 오류 발생 시 | 권장 |
+| 빌드 결과가 이상하게 보일 때 | 권장 |
+
+```bash
+# 캐시 삭제 후 재빌드
+jupyter-book clean docs/
+jupyter-book build docs/
+```
+
+### 11.4 커밋 및 푸시
+
+로컬에서 확인 후 GitHub 에 push 합니다.
+
+```bash
+git add .
+git commit -m "docs: 변경 내용 요약"
+git push origin main
+```
+
+### 11.5 배포 확인
+
+push 후 GitHub Actions 가 자동으로 빌드 및 배포합니다.
+
+- GitHub 레포 → **Actions** 탭 → 초록색 체크 확인
+- 배포 URL: `https://<username>.github.io/myrepo/`
+
+> GitHub Actions 배포까지 보통 1~3분 소요됩니다.
