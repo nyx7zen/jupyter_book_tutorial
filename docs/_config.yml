@@ -1,0 +1,18 @@
+title: "Jupyter Book 튜토리얼"
+author: "nyx7zen"
+logo: ""
+
+execute:
+  execute_notebooks: "off"
+
+kernelspec:
+  name: pytorch_env
+
+repository:
+  url: https://github.com/<username>/myrepo
+  branch: main
+  path_to_book: docs
+
+html:
+  use_repository_button: true
+  use_issues_button: true

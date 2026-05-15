@@ -1,0 +1,704 @@
+# doc-02. 섹션 구조 문서 튜토리얼
+
+## 1. 개요
+
+### 1.1 이 문서의 목적
+
+섹션만으로 구성된 Jupyter Book 문서를 처음부터 완성까지 작성하는 방법을 설명합니다.
+챕터 없이 섹션만 나열하는 구조로, 단순하고 작은 규모의 문서에 적합합니다.
+
+챕터 + 섹션 구조는 {doc}`doc-03-chapter` 를 참고하세요.
+
+### 1.2 완성 후 폴더 구조
+
+```
+myrepo/
+├── src/
+│   ├── __init__.py
+│   ├── signals.py
+│   └── plotter.py
+├── docs/
+│   ├── _config.yml
+│   ├── _toc.yml
+│   ├── intro.md
+│   └── contents/
+│       ├── doc-01-setup.md
+│       ├── doc-02-section.md
+│       ├── doc-03-chapter.md
+│       ├── git-01-setup-https.md
+│       ├── git-02-setup-ssh.md
+│       └── notebooks/
+│           └── nb-01-signals.ipynb
+├── .github/
+│   └── workflows/
+│       └── deploy.yml
+├── .gitignore
+├── setup.py
+└── README.md
+```
+
+완성된 사이드바 구조:
+
+```
+Jupyter Book 튜토리얼
+├── 소개
+├── doc-01. 환경 설정 및 프로젝트 생성
+│   ├── git-01. GitHub 연동 (HTTPS 방식)
+│   └── git-02. GitHub 연동 (SSH 방식)
+├── doc-02. 문서 튜토리얼 (섹션 구조)
+├── doc-03. 북 튜토리얼 (챕터와 섹션 구조)
+└── nb-01. 신호 생성 및 시각화
+```
+
+---
+
+## 2. _config.yml 작성
+
+### 2.1 _config.yml 역할
+
+Jupyter Book 전체의 설정을 담당합니다. 제목, 저자, 실행 방식, GitHub 연동 등을 지정합니다.
+
+### 2.2 주요 설정 항목 설명
+
+| 항목 | 설명 |
+|------|------|
+| `title` | 책 제목 |
+| `author` | 저자명 |
+| `execute.execute_notebooks` | 빌드 시 노트북 재실행 여부 |
+| `kernelspec.name` | 노트북 커널 이름 |
+| `repository.url` | GitHub 레포 URL |
+| `repository.path_to_book` | 레포 루트 기준 book 폴더 경로 |
+| `html.use_repository_button` | 페이지마다 GitHub 링크 버튼 표시 여부 |
+
+### 2.3 예제 _config.yml 전체
+
+`docs/_config.yml` 파일을 생성합니다.
+
+```yaml
+title: "Jupyter Book 튜토리얼"
+author: "Nam"
+logo: ""
+
+execute:
+  execute_notebooks: "off"
+
+kernelspec:
+  name: pytorch_env
+
+repository:
+  url: https://github.com/<username>/myrepo
+  branch: main
+  path_to_book: docs
+
+html:
+  use_repository_button: true
+  use_issues_button: true
+```
+
+> `execute_notebooks: "off"` 로 설정하면 빌드 시 노트북을 재실행하지 않습니다.
+> 노트북은 로컬에서 미리 실행 후 출력을 저장한 상태로 push 합니다.
+
+---
+
+## 3. _toc.yml 작성
+
+### 3.1 _toc.yml 역할
+
+사이드바에 표시되는 문서 목차 구조를 정의합니다.
+등록된 순서대로 사이드바에 나타납니다.
+
+### 3.2 _toc.yml 주요 키워드
+
+`format: jb-book` 에서 사용하는 키워드는 아래와 같습니다.
+
+| 키워드 | 역할 |
+|--------|------|
+| `root` | 첫 페이지 파일 지정 (필수) |
+| `chapters` | root 다음에 오는 페이지 목록 (필수 키워드) |
+| `parts` | 챕터 그룹 지정. `caption` 으로 챕터 제목 설정 |
+| `sections` | 특정 파일의 하위 페이지 목록 |
+
+> `chapters` 는 "챕터 구조"를 의미하는 것이 아닙니다.
+> `format: jb-book` 에서 페이지 목록을 나열할 때 반드시 필요한 필수 키워드입니다.
+> 챕터로 그룹화하려면 `chapters` 대신 `parts` 를 사용합니다.
+
+구조별 키워드 사용:
+
+| 구조 | 키워드 |
+|------|--------|
+| 섹션만 (이 문서) | `root` + `chapters` |
+| 챕터 + 섹션 | `root` + `parts` + `chapters` |
+| 파일 하위 구조 | `sections` |
+
+### 3.3 섹션 구조 개념
+
+섹션 구조는 챕터 없이 파일을 직접 나열합니다.
+
+```
+root (intro.md)
+├── sec-1 (doc-01-setup.md)
+├── sec-2 (doc-02-section.md)
+├── sec-3 (doc-03-chapter.md)
+└── sec-4 (notebooks/nb-01-signals.ipynb)
+```
+
+### 3.4 예제 _toc.yml 전체
+
+`docs/_toc.yml` 파일을 생성합니다.
+
+```yaml
+format: jb-book
+root: intro
+
+chapters:
+  - file: contents/doc-01-setup
+    sections:
+      - file: contents/git-01-setup-https
+      - file: contents/git-02-setup-ssh
+  - file: contents/doc-02-section
+  - file: contents/doc-03-chapter
+  - file: contents/notebooks/nb-01-signals
+```
+
+### 3.5 섹션 등록 방법 상세
+
+- `root` 는 첫 페이지로 표시될 파일을 지정합니다. 확장자 `.md` 는 생략합니다.
+- `chapters` 아래에 `file` 로 각 문서를 등록합니다.
+- 경로는 `docs/` 를 기준으로 작성합니다.
+- `.md` 와 `.ipynb` 모두 확장자를 생략합니다.
+
+---
+
+## 4. intro.md 작성
+
+### 4.1 역할
+
+Jupyter Book 의 첫 페이지입니다. `_toc.yml` 의 `root` 에 지정된 파일입니다.
+
+### 4.2 예제 intro.md 전체
+
+`docs/intro.md` 파일을 생성합니다.
+
+```markdown
+# Jupyter Book 튜토리얼
+
+이 문서는 Jupyter Book 을 이용한 문서 작성 방법을 설명합니다.
+
+## 대상 환경
+
+- Windows + WinPython
+- WSL + Anaconda
+
+## 문서 구성
+
+- doc-01: 환경 설정 및 프로젝트 생성
+- doc-02: 섹션 구조 문서 튜토리얼
+- doc-03: 챕터 + 섹션 구조 북 튜토리얼
+- nb-01: 신호 생성 및 시각화 (Jupyter 노트북)
+```
+
+---
+
+## 5. src 코드 작성
+
+노트북에서 import 할 Python 코드를 먼저 작성합니다.
+
+### 5.1 __init__.py
+
+`src/__init__.py` 파일을 생성합니다. 내용은 비워도 됩니다.
+
+```python
+# src/__init__.py
+```
+
+`__init__.py` 의 역할:
+
+- 해당 폴더가 Python 패키지임을 Python 인터프리터에게 알려주는 파일입니다.
+- 이 파일이 없으면 `from src.signals import ...` 와 같은 import 가 동작하지 않습니다.
+- 내용은 비워도 되며, 패키지 수준의 초기화 코드가 필요한 경우에만 내용을 추가합니다.
+
+### 5.2 signals.py
+
+`src/signals.py` 파일을 생성합니다.
+
+```python
+import numpy as np
+
+
+def generate_sine(freq: float = 1.0, samples: int = 200, duration: float = 1.0):
+    """사인파 생성
+
+    Args:
+        freq: 주파수 (Hz)
+        samples: 샘플 수
+        duration: 시간 길이 (초)
+
+    Returns:
+        x: 시간축 배열
+        y: 사인파 배열
+    """
+    x = np.linspace(0, duration, samples)
+    y = np.sin(2 * np.pi * freq * x)
+    return x, y
+
+
+def generate_cosine(freq: float = 1.0, samples: int = 200, duration: float = 1.0):
+    """코사인파 생성
+
+    Args:
+        freq: 주파수 (Hz)
+        samples: 샘플 수
+        duration: 시간 길이 (초)
+
+    Returns:
+        x: 시간축 배열
+        y: 코사인파 배열
+    """
+    x = np.linspace(0, duration, samples)
+    y = np.cos(2 * np.pi * freq * x)
+    return x, y
+
+
+def add_noise(y: np.ndarray, std: float = 0.1):
+    """가우시안 노이즈 추가
+
+    Args:
+        y: 입력 신호 배열
+        std: 노이즈 표준편차
+
+    Returns:
+        y_noisy: 노이즈가 추가된 신호 배열
+    """
+    noise = np.random.normal(0, std, size=y.shape)
+    return y + noise
+
+
+def generate_composite(freq1: float = 1.0, freq2: float = 3.0,
+                        samples: int = 200, duration: float = 1.0):
+    """사인파 + 코사인파 합성파 생성
+
+    Args:
+        freq1: 사인파 주파수 (Hz)
+        freq2: 코사인파 주파수 (Hz)
+        samples: 샘플 수
+        duration: 시간 길이 (초)
+
+    Returns:
+        x: 시간축 배열
+        y: 합성파 배열
+    """
+    x = np.linspace(0, duration, samples)
+    y = np.sin(2 * np.pi * freq1 * x) + np.cos(2 * np.pi * freq2 * x)
+    return x, y
+```
+
+### 5.3 plotter.py
+
+`src/plotter.py` 파일을 생성합니다.
+
+```python
+import matplotlib.pyplot as plt
+import numpy as np
+
+
+def plot_signal(x: np.ndarray, y: np.ndarray, title: str = "Signal"):
+    """단일 신호 플롯
+
+    Args:
+        x: 시간축 배열
+        y: 신호 배열
+        title: 그래프 제목
+    """
+    fig, ax = plt.subplots(figsize=(8, 3))
+    ax.plot(x, y, color="steelblue", linewidth=1.5)
+    ax.set_title(title)
+    ax.set_xlabel("Time (s)")
+    ax.set_ylabel("Amplitude")
+    ax.grid(True, linestyle="--", alpha=0.5)
+    plt.tight_layout()
+    plt.show()
+
+
+def plot_multiple(x: np.ndarray, signals: list, labels: list,
+                  title: str = "Signals"):
+    """여러 신호 비교 플롯
+
+    Args:
+        x: 시간축 배열
+        signals: 신호 배열 리스트
+        labels: 각 신호의 레이블 리스트
+        title: 그래프 제목
+    """
+    fig, ax = plt.subplots(figsize=(8, 3))
+    colors = ["steelblue", "tomato", "seagreen", "orange"]
+    for i, (y, label) in enumerate(zip(signals, labels)):
+        ax.plot(x, y, label=label, color=colors[i % len(colors)], linewidth=1.5)
+    ax.set_title(title)
+    ax.set_xlabel("Time (s)")
+    ax.set_ylabel("Amplitude")
+    ax.legend()
+    ax.grid(True, linestyle="--", alpha=0.5)
+    plt.tight_layout()
+    plt.show()
+
+
+def plot_with_noise(x: np.ndarray, y_clean: np.ndarray, y_noisy: np.ndarray,
+                    title: str = "Signal with Noise"):
+    """원본 신호 vs 노이즈 추가 신호 비교 플롯
+
+    Args:
+        x: 시간축 배열
+        y_clean: 원본 신호 배열
+        y_noisy: 노이즈 추가 신호 배열
+        title: 그래프 제목
+    """
+    fig, ax = plt.subplots(figsize=(8, 3))
+    ax.plot(x, y_noisy, color="tomato", linewidth=1.0, alpha=0.7, label="Noisy")
+    ax.plot(x, y_clean, color="steelblue", linewidth=2.0, label="Clean")
+    ax.set_title(title)
+    ax.set_xlabel("Time (s)")
+    ax.set_ylabel("Amplitude")
+    ax.legend()
+    ax.grid(True, linestyle="--", alpha=0.5)
+    plt.tight_layout()
+    plt.show()
+```
+
+---
+
+## 6. 마크다운 문서 작성
+
+### 6.1 MyST Markdown 개요
+
+Jupyter Book 은 MyST (Markedly Structured Text) Markdown 을 사용합니다.
+일반 Markdown 문법에 수식, callout, 크로스 레퍼런스 등이 추가된 확장 문법입니다.
+
+### 6.2 제목 / 본문
+
+```markdown
+# 제목 1
+## 제목 2
+### 제목 3
+
+일반 본문 텍스트입니다.
+**굵게**, *기울임*, `인라인 코드`
+```
+
+### 6.3 수식
+
+인라인 수식:
+
+```markdown
+사인파는 $y = \sin(2\pi f t)$ 로 표현됩니다.
+```
+
+블록 수식:
+
+```markdown
+$$
+y = \sin(2\pi f t) + \cos(2\pi f t)
+$$
+```
+
+### 6.4 코드 블록
+
+````markdown
+```python
+import numpy as np
+x = np.linspace(0, 1, 100)
+```
+````
+
+### 6.5 callout
+
+```markdown
+:::{note}
+참고 사항입니다.
+:::
+
+:::{warning}
+주의 사항입니다.
+:::
+
+:::{tip}
+유용한 팁입니다.
+:::
+```
+
+### 6.6 크로스 레퍼런스
+
+다른 문서로 링크:
+
+```markdown
+{doc}`doc-01-setup` 을 참고하세요.
+```
+
+특정 섹션으로 링크:
+
+```markdown
+(section-label)=
+## 섹션 제목
+
+{ref}`section-label` 을 참고하세요.
+```
+
+### 6.7 예제 doc1.md 전체
+
+`docs/contents/doc-01-setup.md` 는 {doc}`doc-01-setup` 을 참고하세요.
+
+### 6.8 예제 doc2.md 전체
+
+추가 문서가 필요한 경우 `docs/contents/` 아래에 동일한 방식으로 작성합니다.
+
+---
+
+## 7. Jupyter 노트북 작성
+
+### 7.1 노트북 파일 위치
+
+```
+docs/contents/notebooks/nb-01-signals.ipynb
+```
+
+VSCode 에서 해당 경로에 새 파일을 생성합니다.
+
+### 7.2 src 코드 import 방법
+
+노트북은 `docs/contents/notebooks/` 안에 있으므로
+레포 루트의 `src/` 를 찾으려면 경로 설정이 필요합니다.
+
+`setup.py` 로 editable 설치한 경우 경로 설정 없이 바로 import 가능합니다.
+
+```python
+# pip install -e . 로 설치한 경우
+from src.signals import generate_sine
+```
+
+editable 설치가 되어 있지 않은 경우 sys.path 를 사용합니다.
+
+```python
+import sys, os
+sys.path.insert(0, os.path.abspath("../../../"))
+from src.signals import generate_sine
+```
+
+### 7.3 execute_notebooks 설정
+
+`_config.yml` 에서 `execute_notebooks: "off"` 로 설정하면
+빌드 시 노트북을 재실행하지 않고 저장된 출력을 그대로 표시합니다.
+
+노트북은 VSCode 에서 실행 후 출력이 포함된 상태로 저장합니다.
+
+```
+Shift+Enter    현재 셀 실행
+Ctrl+S         저장 (출력 포함)
+```
+
+### 7.4 노트북 셀 구성
+
+`docs/contents/notebooks/nb-01-signals.ipynb` 를 VSCode 에서 열고
+아래 셀 내용을 순서대로 입력합니다.
+
+---
+
+**[markdown 셀]**
+
+```
+# nb-01. 신호 생성 및 시각화
+
+`src.signals` 와 `src.plotter` 를 import 하여
+사인파, 코사인파, 노이즈, 합성파를 생성하고 시각화합니다.
+```
+
+---
+
+**[code 셀] - 경로 설정 (첫 번째 코드 셀)**
+
+```python
+import os
+import sys
+
+# 레포 루트 경로 설정
+ROOT = os.path.abspath(os.path.join(os.getcwd(), "../../.."))
+print(f"ROOT: {ROOT}")
+
+# sys.path 에 추가 (이미 등록된 경우 중복 추가 방지)
+if ROOT not in sys.path:
+    sys.path.insert(0, ROOT)
+```
+
+> `os.getcwd()` 는 노트북 파일이 위치한 디렉토리를 반환합니다.
+> 노트북 위치가 `docs/contents/notebooks/` 이므로
+> `../../..` 로 레포 루트 `myrepo/` 를 가리킵니다.
+> `pip install -e .` 로 editable 설치가 되어 있으면 이 셀 없이도 import 가 가능하지만,
+> 명시적으로 경로를 설정해두면 설치 여부와 관계없이 안정적으로 동작합니다.
+
+---
+
+**[code 셀]**
+
+```python
+from src.signals import generate_sine, generate_cosine
+from src.signals import add_noise, generate_composite
+from src.plotter import plot_signal, plot_multiple, plot_with_noise
+```
+
+---
+
+**[markdown 셀]**
+
+```
+## 1. 사인파 / 코사인파 생성
+
+`generate_sine()` 과 `generate_cosine()` 으로 기본 신호를 생성합니다.
+
+$$
+y_{\sin} = \sin(2\pi f t), \quad y_{\cos} = \cos(2\pi f t)
+$$
+```
+
+---
+
+**[code 셀]**
+
+```python
+x, y_sin = generate_sine(freq=2.0, samples=200, duration=1.0)
+plot_signal(x, y_sin, title="Sine Wave (freq=2Hz)")
+```
+
+---
+
+**[code 셀]**
+
+```python
+x, y_cos = generate_cosine(freq=2.0, samples=200, duration=1.0)
+plot_signal(x, y_cos, title="Cosine Wave (freq=2Hz)")
+```
+
+---
+
+**[markdown 셀]**
+
+```
+## 2. 노이즈 추가
+
+`add_noise()` 로 가우시안 노이즈를 추가하고 원본과 비교합니다.
+```
+
+---
+
+**[code 셀]**
+
+```python
+y_noisy = add_noise(y_sin, std=0.2)
+plot_with_noise(x, y_sin, y_noisy, title="Sine Wave with Noise (std=0.2)")
+```
+
+---
+
+**[markdown 셀]**
+
+```
+## 3. 합성파
+
+`generate_composite()` 로 사인파와 코사인파를 합성합니다.
+
+$$
+y = \sin(2\pi f_1 t) + \cos(2\pi f_2 t)
+$$
+```
+
+---
+
+**[code 셀]**
+
+```python
+x, y_comp = generate_composite(freq1=1.0, freq2=3.0, samples=200, duration=1.0)
+x, y_sin1 = generate_sine(freq=1.0, samples=200, duration=1.0)
+x, y_cos3 = generate_cosine(freq=3.0, samples=200, duration=1.0)
+
+plot_multiple(
+    x,
+    signals=[y_sin1, y_cos3, y_comp],
+    labels=["sin (1Hz)", "cos (3Hz)", "composite"],
+    title="Composite Signal"
+)
+```
+
+---
+
+**[markdown 셀]**
+
+```
+## 정리
+
+| 함수 | 설명 |
+|------|------|
+| `generate_sine()` | 사인파 생성 |
+| `generate_cosine()` | 코사인파 생성 |
+| `add_noise()` | 가우시안 노이즈 추가 |
+| `generate_composite()` | 합성파 생성 |
+| `plot_signal()` | 단일 신호 플롯 |
+| `plot_multiple()` | 여러 신호 비교 플롯 |
+| `plot_with_noise()` | 원본 vs 노이즈 비교 플롯 |
+```
+
+---
+
+## 8. 로컬 빌드 및 확인
+
+### 8.1 빌드 명령어
+
+#### Windows + WinPython
+
+```cmd
+cd D:\projects\myrepo
+jupyter-book build docs/
+start docs\_build\html\index.html
+```
+
+#### WSL + Anaconda
+
+```bash
+conda activate pytorch_env
+cd ~/projects/myrepo
+jupyter-book build docs/
+explorer.exe docs/_build/html/index.html
+```
+
+### 8.2 빌드 오류 시 대처
+
+```bash
+# 캐시 삭제 후 재빌드
+jupyter-book clean docs/
+jupyter-book build docs/
+
+# 상세 오류 확인
+jupyter-book build docs/ --verbose
+```
+
+---
+
+## 9. GitHub push 및 배포 확인
+
+### 9.1 push 명령어
+
+```bash
+git add .
+git commit -m "add section tutorial"
+git push origin main
+```
+
+### 9.2 GitHub Actions 확인
+
+- GitHub 레포 → Actions 탭
+- `Deploy Jupyter Book` 워크플로우 실행 상태 확인
+- 초록색 체크 표시가 되면 배포 완료
+
+### 9.3 GitHub Pages URL 확인
+
+```
+https://<username>.github.io/myrepo/
+```
+
+> 최초 배포 후 GitHub Pages 가 활성화되기까지 1~2분 소요될 수 있습니다.
