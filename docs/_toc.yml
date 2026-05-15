@@ -1,7 +1,7 @@
-format: jb-book
+format: jb-article
 root: intro
 
-chapters:
+sections:
   - file: contents/doc-01-setup
     sections:
       - file: contents/git-01-setup-https

@@ -36,6 +36,7 @@ myrepo/
 │       ├── doc-01-setup.md
 │       ├── doc-02-section.md
 │       ├── doc-03-chapter.md
+│       ├── doc-04-new-project.md
 │       ├── git-01-setup-https.md
 │       ├── git-02-setup-ssh.md
 │       └── notebooks/
@@ -54,14 +55,16 @@ myrepo/
 Jupyter Book 튜토리얼
 ├── 소개
 ├── chapter-01. 환경 설정
-│   └── doc-01. 환경 설정 및 프로젝트 생성
-│       ├── git-01. GitHub 연동 (HTTPS 방식)
-│       └── git-02. GitHub 연동 (SSH 방식)
+│   └── 환경 설정 및 프로젝트 생성
+│       ├── GitHub 연동 (HTTPS 방식)
+│       └── GitHub 연동 (SSH 방식)
 ├── chapter-02. 마크다운 예제
-│   ├── doc-02. 문서 튜토리얼 (섹션 구조)
-│   └── doc-03. 북 튜토리얼 (챕터와 섹션 구조)
-└── chapter-03. 노트북 예제
-    └── nb-01. 신호 생성 및 시각화
+│   ├── 문서 튜토리얼 (섹션 구조)
+│   └── 북 튜토리얼 (챕터와 섹션 구조)
+├── chapter-03. 활용
+│   └── 새 Jupyter Book 프로젝트 생성
+└── chapter-04. 노트북 예제
+    └── [예제] 신호 생성 및 시각화
 ```
 
 ---
@@ -70,23 +73,24 @@ Jupyter Book 튜토리얼
 
 ### 2.1 _toc.yml 구조 비교
 
-**doc-02 — 섹션 구조 (`chapters` 사용)**
+**doc-02 — 섹션 구조 (`jb-article`)**
 
 ```yaml
-format: jb-book
+format: jb-article
 root: intro
 
-chapters:
+sections:
   - file: contents/doc-01-setup
     sections:
       - file: contents/git-01-setup-https
       - file: contents/git-02-setup-ssh
   - file: contents/doc-02-section
   - file: contents/doc-03-chapter
+  - file: contents/doc-04-new-project
   - file: contents/notebooks/nb-01-signals
 ```
 
-**doc-03 — 챕터 + 섹션 구조 (`parts` 사용)**
+**doc-03 — 챕터 + 섹션 구조 (`jb-book`)**
 
 ```yaml
 format: jb-book
@@ -105,36 +109,43 @@ parts:
       - file: contents/doc-02-section
       - file: contents/doc-03-chapter
 
-  - caption: "chapter-03. 노트북 예제"
+  - caption: "chapter-03. 활용"
+    chapters:
+      - file: contents/doc-04-new-project
+
+  - caption: "chapter-04. 노트북 예제"
     chapters:
       - file: contents/notebooks/nb-01-signals
 ```
 
 ### 2.2 사이드바 결과 비교
 
-**섹션 구조**
+**섹션 구조 (jb-article)**
 
 ```
-├── doc-01. 환경 설정 및 프로젝트 생성
-│   ├── git-01. GitHub 연동 (HTTPS 방식)
-│   └── git-02. GitHub 연동 (SSH 방식)
-├── doc-02. 문서 튜토리얼 (섹션 구조)
-├── doc-03. 북 튜토리얼 (챕터와 섹션 구조)
-└── nb-01. 신호 생성 및 시각화
+├── 환경 설정 및 프로젝트 생성
+│   ├── GitHub 연동 (HTTPS 방식)
+│   └── GitHub 연동 (SSH 방식)
+├── 문서 튜토리얼 (섹션 구조)
+├── 북 튜토리얼 (챕터와 섹션 구조)
+├── 새 Jupyter Book 프로젝트 생성
+└── [예제] 신호 생성 및 시각화
 ```
 
-**챕터 + 섹션 구조**
+**챕터 + 섹션 구조 (jb-book)**
 
 ```
 ├── chapter-01. 환경 설정
-│   └── doc-01. 환경 설정 및 프로젝트 생성
-│       ├── git-01. GitHub 연동 (HTTPS 방식)
-│       └── git-02. GitHub 연동 (SSH 방식)
+│   └── 환경 설정 및 프로젝트 생성
+│       ├── GitHub 연동 (HTTPS 방식)
+│       └── GitHub 연동 (SSH 방식)
 ├── chapter-02. 마크다운 예제
-│   ├── doc-02. 문서 튜토리얼 (섹션 구조)
-│   └── doc-03. 북 튜토리얼 (챕터와 섹션 구조)
-└── chapter-03. 노트북 예제
-    └── nb-01. 신호 생성 및 시각화
+│   ├── 문서 튜토리얼 (섹션 구조)
+│   └── 북 튜토리얼 (챕터와 섹션 구조)
+├── chapter-03. 활용
+│   └── 새 Jupyter Book 프로젝트 생성
+└── chapter-04. 노트북 예제
+    └── [예제] 신호 생성 및 시각화
 ```
 
 ---
@@ -192,21 +203,16 @@ repository:
 | 키워드 | 역할 |
 |--------|------|
 | `root` | 첫 페이지 파일 지정 (필수) |
-| `chapters` | root 다음에 오는 페이지 목록 (필수 키워드) |
 | `parts` | 챕터 그룹 지정. `caption` 으로 챕터 제목 설정 |
-| `sections` | 특정 파일의 하위 페이지 목록 |
+| `chapters` | `parts` 안의 문서 목록 |
+| `sections` | 특정 파일의 하위 문서 목록 |
 
-> `chapters` 는 "챕터 구조"를 의미하는 것이 아닙니다.
-> `format: jb-book` 에서 페이지 목록을 나열할 때 반드시 필요한 필수 키워드입니다.
-> 챕터로 그룹화하려면 `chapters` 대신 `parts` 를 사용합니다.
+구조별 format 비교:
 
-구조별 키워드 사용:
-
-| 구조 | 키워드 |
-|------|--------|
-| 섹션만 (doc-02) | `root` + `chapters` |
-| 챕터 + 섹션 (이 문서) | `root` + `parts` + `chapters` |
-| 파일 하위 구조 | `sections` |
+| format | 구조 | 키워드 |
+|--------|------|--------|
+| `jb-article` (doc-02) | 섹션만 | `root` + `sections` |
+| `jb-book` (이 문서) | 챕터 + 섹션 | `root` + `parts` + `chapters` |
 
 ### 5.2 parts / chapters / sections 계층 구조 설명
 
@@ -248,7 +254,11 @@ parts:
       - file: contents/doc-02-section
       - file: contents/doc-03-chapter
 
-  - caption: "chapter-03. 노트북 예제"
+  - caption: "chapter-03. 활용"
+    chapters:
+      - file: contents/doc-04-new-project
+
+  - caption: "chapter-04. 노트북 예제"
     chapters:
       - file: contents/notebooks/nb-01-signals
 ```

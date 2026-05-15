@@ -97,6 +97,7 @@ myrepo/
 │       ├── doc-01-setup.md
 │       ├── doc-02-section.md
 │       ├── doc-03-chapter.md
+│       ├── doc-04-new-project.md
 │       ├── git-01-setup-https.md
 │       ├── git-02-setup-ssh.md
 │       └── notebooks/
