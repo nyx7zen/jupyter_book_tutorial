@@ -81,7 +81,7 @@ Jupyter Book 전체의 설정을 담당합니다. 제목, 저자, 실행 방식,
 
 ```yaml
 title: "Jupyter Book 튜토리얼"
-author: "nyx7zen"
+author: "Nam"
 logo: ""
 
 execute:
@@ -559,26 +559,41 @@ Ctrl+S         저장 (출력 포함)
 
 ---
 
-**[code 셀] - 경로 설정 (첫 번째 코드 셀)**
+**[code 셀] - 경로 설정 (첫 번째 코드 셀) — `remove-cell` 태그 적용**
 
 ```python
 import os
 import sys
 
-# 레포 루트 경로 설정
-ROOT = os.path.abspath(os.path.join(os.getcwd(), "../../.."))
-print(f"ROOT: {ROOT}")
-
-# sys.path 에 추가 (이미 등록된 경우 중복 추가 방지)
-if ROOT not in sys.path:
-    sys.path.insert(0, ROOT)
+ROOT_DIR = os.path.normpath(os.path.join(os.getcwd(), "..", "..", ".."))
+if ROOT_DIR not in sys.path:
+    sys.path.insert(0, ROOT_DIR)
 ```
 
-> `os.getcwd()` 는 노트북 파일이 위치한 디렉토리를 반환합니다.
-> 노트북 위치가 `docs/contents/notebooks/` 이므로
-> `../../..` 로 레포 루트 `myrepo/` 를 가리킵니다.
-> `pip install -e .` 로 editable 설치가 되어 있으면 이 셀 없이도 import 가 가능하지만,
-> 명시적으로 경로를 설정해두면 설치 여부와 관계없이 안정적으로 동작합니다.
+이 셀은 노트북 실행 시에만 필요하고 문서에는 표시되지 않아야 하므로 `remove-cell` 태그를 적용합니다.
+
+**VSCode 에서 태그 추가 방법:**
+
+1. VSCode 에서 노트북 열기
+2. 경로 설정 셀 우측 상단 `...` 클릭
+3. **Add Cell Tag** 클릭
+4. `remove-cell` 입력 후 Enter
+5. `Ctrl+S` 저장
+
+태그 종류와 효과:
+
+| 태그 | 코드 | 출력 | 용도 |
+|------|------|------|------|
+| `remove-input` | 숨김 | 표시 | 출력 결과는 보여주고 코드만 숨길 때 |
+| `remove-output` | 표시 | 숨김 | 코드는 보여주고 출력만 숨길 때 |
+| `remove-cell` | 숨김 | 숨김 | 셀 전체를 완전히 숨길 때 |
+
+태그 적용 후 재빌드:
+
+```bash
+jupyter-book clean docs/
+jupyter-book build docs/
+```
 
 ---
 
@@ -595,7 +610,7 @@ from src.plotter import plot_signal, plot_multiple, plot_with_noise
 **[markdown 셀]**
 
 ```
-## 1. 사인파 / 코사인파 생성
+## 사인파 / 코사인파 생성
 
 `generate_sine()` 과 `generate_cosine()` 으로 기본 신호를 생성합니다.
 
@@ -627,7 +642,7 @@ plot_signal(x, y_cos, title="Cosine Wave (freq=2Hz)")
 **[markdown 셀]**
 
 ```
-## 2. 노이즈 추가
+## 노이즈 추가
 
 `add_noise()` 로 가우시안 노이즈를 추가하고 원본과 비교합니다.
 ```
@@ -646,7 +661,7 @@ plot_with_noise(x, y_sin, y_noisy, title="Sine Wave with Noise (std=0.2)")
 **[markdown 셀]**
 
 ```
-## 3. 합성파
+## 합성파
 
 `generate_composite()` 로 사인파와 코사인파를 합성합니다.
 
