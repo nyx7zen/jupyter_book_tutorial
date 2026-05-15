@@ -14,6 +14,19 @@ GitHub 연동은 아래 2가지 인증 방식을 지원합니다.
 - HTTPS + PAT 방식
 - SSH 방식
 
+### Jupyter Book 버전 안내
+
+이 튜토리얼은 **Jupyter Book v1 (1.x)** 을 기준으로 작성되었습니다.
+
+| 항목 | v1 (이 튜토리얼) | v2 |
+|------|-----------------|-----|
+| 설정 파일 | `_config.yml` + `_toc.yml` | `myst.yml` (통합) |
+| 빌드 명령 | `jupyter-book build docs/` | `jupyter book build docs/` (공백) |
+| 기반 엔진 | Sphinx | MyST-MD (새 엔진) |
+| 안정성 | 안정 버전 | 아직 개발 중 (2025년 기준) |
+
+> v2 는 설정 파일 구조와 빌드 명령이 완전히 다릅니다. pip 설치 시 최신 버전(v2)이 설치될 수 있으므로 반드시 버전을 지정해야 합니다.
+
 ---
 
 ## 2. 사전 요구사항
@@ -45,12 +58,14 @@ VSCode 필수 확장:
 
 ## 3. jupyter-book 설치
 
+> **버전 주의:** `pip install jupyter-book` 만 실행하면 v2 (최신 버전) 가 설치됩니다. 이 튜토리얼은 v1 기준이므로 반드시 버전을 지정합니다.
+
 ### 3.1 Windows + WinPython
 
 ```cmd
-pip install jupyter-book ghp-import
+pip install jupyter-book==1.0.4 ghp-import
 
-# 설치 확인
+# 설치 확인 (v1.0.4 가 표시되어야 합니다)
 jupyter-book --version
 ```
 
@@ -58,9 +73,9 @@ jupyter-book --version
 
 ```bash
 conda activate pytorch_env
-pip install jupyter-book ghp-import
+pip install jupyter-book==1.0.4 ghp-import
 
-# 설치 확인
+# 설치 확인 (v1.0.4 가 표시되어야 합니다)
 jupyter-book --version
 ```
 
@@ -265,14 +280,20 @@ git push -u origin main
 
 GitHub Pages 는 빌드된 Jupyter Book 을 웹에 공개하는 기능입니다.
 
-**최초 1회 설정:**
+**최초 1회 설정 순서:**
 
-- GitHub 레포 → Settings → Pages
-- Source: `Deploy from a branch` 선택
-- Branch: `gh-pages` 선택 → Save
+1. 먼저 `git push` 로 Actions 를 실행하여 `gh-pages` 브랜치를 생성합니다.
+2. Actions 가 성공한 후 아래 설정을 진행합니다.
+3. GitHub 레포 → **Settings** 탭 클릭
+4. 왼쪽 사이드바 → **Pages** 클릭
+5. **Source** 섹션에서:
+   - `Deploy from a branch` 선택
+   - Branch: **`gh-pages`** 선택
+   - 폴더: **`/ (root)`** 선택
+6. **Save** 클릭
 
 > `gh-pages` 브랜치는 GitHub Actions 가 최초 배포 시 자동으로 생성합니다.
-> 따라서 최초 push 후 Actions 가 실행된 다음 설정하면 됩니다.
+> Actions 실행 전에는 목록에 나타나지 않습니다.
 
 **배포 URL:**
 
@@ -323,12 +344,15 @@ jupyter-book build docs/
 
 ```
 docs/_build/
+_build/
 docs/.jupyter_cache/
 __pycache__/
 *.pyc
 *.egg-info/
 .ipynb_checkpoints/
 ```
+
+> `_build/` 항목은 레포 루트에 빌드 캐시가 생성될 경우를 대비하여 추가합니다.
 
 ---
 
@@ -343,20 +367,23 @@ on:
   push:
     branches: [main]
 
+permissions:
+  contents: write
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Setup Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: '3.11'
 
       - name: Install dependencies
         run: |
-          pip install jupyter-book ghp-import
+          pip install jupyter-book==1.0.4 ghp-import
           pip install -e .
 
       - name: Build
@@ -367,3 +394,12 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 ```
+
+주요 설정 항목:
+
+| 항목 | 설명 |
+|------|------|
+| `permissions: contents: write` | `gh-pages` 브랜치 push 권한 부여 |
+| `jupyter-book==1.0.4` | v1 버전 고정 (미지정 시 v2 설치됨) |
+| `actions/checkout@v4` | 최신 checkout action |
+| `actions/setup-python@v5` | 최신 Python setup action |

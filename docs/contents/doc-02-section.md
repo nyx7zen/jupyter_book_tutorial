@@ -9,6 +9,9 @@
 
 챕터 + 섹션 구조는 {doc}`doc-03-chapter` 를 참고하세요.
 
+> 이 튜토리얼은 **Jupyter Book v1 (1.0.4)** 기준으로 작성되었습니다.
+> 버전 설치 및 v1/v2 차이점은 {doc}`doc-01-setup` 을 참고하세요.
+
 ### 1.2 완성 후 폴더 구조
 
 ```
@@ -677,6 +680,13 @@ jupyter-book build docs/
 jupyter-book build docs/ --verbose
 ```
 
+> **v2 설치 오류:** `EISDIR: illegal operation on a directory` 오류가 발생하면 v2 가 설치된 것입니다.
+> 아래 명령으로 v1 으로 재설치합니다.
+> ```bash
+> pip uninstall jupyter-book -y
+> pip install jupyter-book==1.0.4
+> ```
+
 ---
 
 ## 9. GitHub push 및 배포 확인
@@ -695,10 +705,22 @@ git push origin main
 - `Deploy Jupyter Book` 워크플로우 실행 상태 확인
 - 초록색 체크 표시가 되면 배포 완료
 
-### 9.3 GitHub Pages URL 확인
+> **Actions 권한 오류:** `Permission denied` 오류가 발생하면 `deploy.yml` 에 `permissions: contents: write` 가 있는지 확인합니다.
+
+### 9.3 GitHub Pages 설정 (최초 1회)
+
+Actions 가 성공한 후 GitHub Pages 를 수동으로 활성화해야 합니다.
+
+1. GitHub 레포 → **Settings** 탭
+2. 왼쪽 사이드바 → **Pages**
+3. Source: `Deploy from a branch` 선택
+4. Branch: **`gh-pages`** / **`/ (root)`** 선택
+5. **Save** 클릭
+
+### 9.4 GitHub Pages URL 확인
 
 ```
 https://<username>.github.io/myrepo/
 ```
 
-> 최초 배포 후 GitHub Pages 가 활성화되기까지 1~2분 소요될 수 있습니다.
+> Save 후 1~2분 기다리면 URL 에서 확인 가능합니다.
