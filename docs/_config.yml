@@ -9,7 +9,7 @@ kernelspec:
   name: pytorch_env
 
 repository:
-  url: https://github.com/<username>/myrepo
+  url: https://github.com/nyx7zen/jupyter_book_tutorial
   branch: main
   path_to_book: docs
 
