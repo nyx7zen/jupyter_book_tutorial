@@ -8,4 +8,5 @@ chapters:
       - file: contents/git-02-setup-ssh
   - file: contents/doc-02-section
   - file: contents/doc-03-chapter
+  - file: contents/doc-04-new-project
   - file: contents/notebooks/nb-01-signals
