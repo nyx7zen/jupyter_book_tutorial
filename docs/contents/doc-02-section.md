@@ -81,7 +81,7 @@ Jupyter Book 전체의 설정을 담당합니다. 제목, 저자, 실행 방식,
 
 ```yaml
 title: "Jupyter Book 튜토리얼"
-author: "Nam"
+author: "nyx7zen"
 logo: ""
 
 execute:
