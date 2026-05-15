@@ -1,4 +1,4 @@
-# git-02. GitHub 연동 - SSH 방식
+# GitHub 연동 - SSH 방식
 
 ## 1. Git 설치
 

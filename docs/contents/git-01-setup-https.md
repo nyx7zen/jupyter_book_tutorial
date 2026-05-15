@@ -1,4 +1,4 @@
-# git-01. GitHub 연동 - HTTPS + PAT 방식
+# GitHub 연동 - HTTPS 방식
 
 ## 1. Git 설치
 

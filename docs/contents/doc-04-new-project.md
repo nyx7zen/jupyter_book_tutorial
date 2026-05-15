@@ -1,4 +1,4 @@
-# doc-04. 새 Jupyter Book 프로젝트 생성
+# 새 Jupyter Book 프로젝트 생성
 
 ## 1. 개요
 
