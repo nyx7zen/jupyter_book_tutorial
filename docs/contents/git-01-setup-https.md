@@ -1,6 +1,6 @@
 # GitHub 연동 - HTTPS + PAT 방식
 
-## 1. Git 설치
+## Git 설치
 
 ### Windows
 
@@ -25,7 +25,7 @@ git --version
 
 ---
 
-## 2. Git 전역 설정 (최초 1회)
+## Git 전역 설정 (최초 1회)
 
 ### Windows
 
@@ -78,7 +78,7 @@ git config --list --global
 
 ---
 
-## 3. 기존 자격증명 확인 및 제거
+## 기존 자격증명 확인 및 제거
 
 ```bash
 # 자격증명 관리자 바로 실행 (Win + R)
@@ -96,7 +96,7 @@ git credential-manager reject https://github.com
 
 ---
 
-## 4. PAT 발급
+## PAT 발급
 
 ### account1 PAT 발급
 
@@ -118,7 +118,7 @@ git credential-manager reject https://github.com
 
 ---
 
-## 5. account1 으로 등록
+## account1 으로 등록
 
 ```bash
 # 자격증명 관리자 바로 실행 (Win + R)
@@ -139,7 +139,7 @@ git ls-remote https://github.com/<account1>/<repo>.git
 
 ---
 
-## 6. account2 로 전환
+## account2 로 전환
 
 ```bash
 # 자격증명 관리자 바로 실행 (Win + R)
@@ -163,7 +163,7 @@ git config --list --local
 
 ---
 
-## 7. account1 으로 전환
+## account1 으로 전환
 
 ```bash
 # 자격증명 관리자 바로 실행 (Win + R)

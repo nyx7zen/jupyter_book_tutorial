@@ -1,6 +1,6 @@
 # GitHub 연동 - SSH 방식
 
-## 1. Git 설치
+## Git 설치
 
 ### Windows
 
@@ -25,7 +25,7 @@ git --version
 
 ---
 
-## 2. Git 전역 설정 (최초 1회)
+## Git 전역 설정 (최초 1회)
 
 ### Windows
 
@@ -69,7 +69,7 @@ git config --list --global
 
 ---
 
-## 3. 기존 SSH 키 확인
+## 기존 SSH 키 확인
 
 ### Windows
 
@@ -109,7 +109,7 @@ ssh-add -l -E sha256
 
 ---
 
-## 4. SSH 키 생성
+## SSH 키 생성
 
 ### Windows
 
@@ -147,7 +147,7 @@ cat ~/.ssh/id_ed25519_account2_wsl.pub
 
 ---
 
-## 5. GitHub 에 공개키 등록
+## GitHub 에 공개키 등록
 
 ### Windows
 
@@ -183,7 +183,7 @@ cat ~/.ssh/id_ed25519_account2_wsl.pub
 
 ---
 
-## 6. ~/.ssh/config 파일 작성
+## ~/.ssh/config 파일 작성
 
 ### Windows (Git Bash)
 
@@ -217,7 +217,7 @@ Host github-account2
 
 ---
 
-## 7. 연결 확인
+## 연결 확인
 
 ```bash
 # account1 연결 확인
@@ -231,7 +231,7 @@ ssh -T git@github-account2
 
 ---
 
-## 8. account1 repo 연결
+## account1 repo 연결
 
 ```bash
 # account1 repo remote 연결
@@ -247,7 +247,7 @@ git config --list --local
 
 ---
 
-## 9. account2 로 전환 (account2 repo 작업 시)
+## account2 로 전환 (account2 repo 작업 시)
 
 ```bash
 # account2 repo remote 연결
@@ -263,7 +263,7 @@ git config --list --local
 
 ---
 
-## 10. account1 으로 전환 (account1 repo 작업 시)
+## account1 으로 전환 (account1 repo 작업 시)
 
 ```bash
 # account1 repo remote 연결

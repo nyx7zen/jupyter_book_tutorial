@@ -1,6 +1,6 @@
 # 새 Jupyter Book 프로젝트 생성
 
-## 1. 개요
+## 개요
 
 완성된 튜토리얼 구조를 복사하여 새 Jupyter Book 프로젝트를 시작하는 방법을 설명합니다.
 
@@ -8,7 +8,7 @@
 
 ---
 
-## 2. 복사 대상
+## 복사 대상
 
 기존 튜토리얼 프로젝트에서 아래 두 폴더를 새 프로젝트로 복사합니다.
 
@@ -19,7 +19,7 @@ jupyter_book_tutorial/src/    →   new_project/src/
 
 ---
 
-## 3. 필수 수정 파일 목록
+## 필수 수정 파일 목록
 
 ```
 new_project/
@@ -36,7 +36,7 @@ new_project/
 
 ---
 
-## 4. `setup.py` 수정
+## `setup.py` 수정
 
 `name` 을 새 프로젝트명으로 변경합니다.
 
@@ -52,7 +52,7 @@ setup(
 
 ---
 
-## 5. `_config.yml` 수정
+## `_config.yml` 수정
 
 `docs/_config.yml` 에서 아래 항목을 수정합니다.
 
@@ -79,7 +79,7 @@ html:
 
 ---
 
-## 6. `intro.md` 수정
+## `intro.md` 수정
 
 `docs/intro.md` 를 새 프로젝트 소개로 수정합니다.
 
@@ -96,9 +96,9 @@ html:
 
 ---
 
-## 7. `_toc.yml` 수정
+## `_toc.yml` 수정
 
-### 7.1 섹션 구조 (챕터 없음)
+### 섹션 구조 (챕터 없음)
 
 `docs/_toc.yml` 에서 새 문서를 추가하거나 기존 항목을 교체합니다.
 
@@ -132,7 +132,7 @@ chapters:
 > `_toc.yml` 에 등록된 파일만 사이드바에 표시됩니다.
 > 새 파일을 추가할 때는 반드시 `_toc.yml` 에도 등록해야 합니다.
 
-### 7.2 챕터 + 섹션 구조
+### 챕터 + 섹션 구조
 
 **새 챕터 추가:**
 
@@ -180,7 +180,7 @@ parts:
 
 ---
 
-## 8. 그대로 유지해도 되는 항목
+## 그대로 유지해도 되는 항목
 
 | 항목 | 이유 |
 |------|------|
@@ -189,9 +189,9 @@ parts:
 
 ---
 
-## 9. 작업 순서
+## 작업 순서
 
-### 9.1 프로젝트 복사 및 수정
+### 프로젝트 복사 및 수정
 
 ```
 1. docs/ + src/ 복사
@@ -202,7 +202,7 @@ parts:
 6. contents/     → 새 문서/노트북으로 교체
 ```
 
-### 9.2 로컬 빌드 확인
+### 로컬 빌드 확인
 
 #### Windows + WinPython
 
@@ -225,7 +225,7 @@ explorer.exe docs/_build/html/index.html
 
 > `_toc.yml` 을 수정한 경우 반드시 `clean` 후 빌드합니다.
 
-### 9.3 GitHub 레포 생성
+### GitHub 레포 생성
 
 - GitHub 로그인 → **New repository**
 - Repository name: `new_project`
@@ -233,7 +233,7 @@ explorer.exe docs/_build/html/index.html
 - Initialize: **체크 해제**
 - **Create repository** 클릭
 
-### 9.4 커밋 및 푸시
+### 커밋 및 푸시
 
 #### HTTPS 방식
 
@@ -255,7 +255,7 @@ git commit -m "init: new jupyter book project"
 git push -u origin main
 ```
 
-### 9.5 GitHub Pages 설정 (최초 1회)
+### GitHub Pages 설정 (최초 1회)
 
 push 후 Actions 가 성공하면 GitHub Pages 를 활성화합니다.
 
@@ -265,7 +265,7 @@ push 후 Actions 가 성공하면 GitHub Pages 를 활성화합니다.
 4. Branch: **`gh-pages`** / **`/ (root)`** 선택
 5. **Save** 클릭
 
-### 9.6 배포 URL 확인
+### 배포 URL 확인
 
 ```
 https://<username>.github.io/new_project/
@@ -273,7 +273,7 @@ https://<username>.github.io/new_project/
 
 ---
 
-## 10. 이후 문서 수정 시 워크플로우
+## 이후 문서 수정 시 워크플로우
 
 새 문서 추가 또는 기존 문서 수정 시 아래 순서로 진행합니다.
 

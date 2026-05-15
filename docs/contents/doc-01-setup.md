@@ -1,6 +1,6 @@
 # 환경 설정 및 프로젝트 생성
 
-## 1. 개요
+## 개요
 
 이 문서는 Jupyter Book 튜토리얼 프로젝트를 시작하기 위한 환경 설정 및 프로젝트 생성 방법을 설명합니다.
 
@@ -29,9 +29,9 @@ GitHub 연동은 아래 2가지 인증 방식을 지원합니다.
 
 ---
 
-## 2. 사전 요구사항
+## 사전 요구사항
 
-### 2.1 Windows + WinPython
+### Windows + WinPython
 
 | 항목 | 내용 |
 |------|------|
@@ -39,7 +39,7 @@ GitHub 연동은 아래 2가지 인증 방식을 지원합니다.
 | Python | WinPython (환경 활성화 불필요) |
 | Git | Git for Windows 설치 |
 
-### 2.2 WSL + Anaconda
+### WSL + Anaconda
 
 | 항목 | 내용 |
 |------|------|
@@ -56,11 +56,11 @@ VSCode 필수 확장:
 
 ---
 
-## 3. jupyter-book 설치
+## jupyter-book 설치
 
 > **버전 주의:** `pip install jupyter-book` 만 실행하면 v2 (최신 버전) 가 설치됩니다. 이 튜토리얼은 v1 기준이므로 반드시 버전을 지정합니다.
 
-### 3.1 Windows + WinPython
+### Windows + WinPython
 
 ```cmd
 pip install jupyter-book==1.0.4 ghp-import
@@ -69,7 +69,7 @@ pip install jupyter-book==1.0.4 ghp-import
 jupyter-book --version
 ```
 
-### 3.2 WSL + Anaconda
+### WSL + Anaconda
 
 ```bash
 conda activate pytorch_env
@@ -81,7 +81,7 @@ jupyter-book --version
 
 ---
 
-## 4. 프로젝트 폴더 구조
+## 프로젝트 폴더 구조
 
 ```
 myrepo/
@@ -112,9 +112,9 @@ myrepo/
 
 ---
 
-## 5. 폴더 생성
+## 폴더 생성
 
-### 5.1 Windows + WinPython
+### Windows + WinPython
 
 ```cmd
 cd D:\projects
@@ -128,7 +128,7 @@ mkdir .github
 mkdir .github\workflows
 ```
 
-### 5.2 WSL + Anaconda
+### WSL + Anaconda
 
 ```bash
 cd ~/projects
@@ -144,7 +144,7 @@ mkdir .github/workflows
 
 ---
 
-## 6. setup.py 작성
+## setup.py 작성
 
 레포 루트에 `setup.py` 파일을 생성합니다.
 
@@ -163,7 +163,7 @@ setup(
 
 ---
 
-## 7. 패키지 설치 (pip install -e .)
+## 패키지 설치 (pip install -e .)
 
 editable 모드로 설치하면 `src/` 코드 수정이 즉시 반영됩니다.
 
@@ -192,9 +192,9 @@ print("import 성공")
 
 ---
 
-## 8. GitHub 레포 생성 및 연동
+## GitHub 레포 생성 및 연동
 
-### 8.1 레포 생성
+### 레포 생성
 
 GitHub 에 접속하여 새 레포지토리를 생성합니다.
 
@@ -204,7 +204,7 @@ GitHub 에 접속하여 새 레포지토리를 생성합니다.
 - Initialize: 체크 해제 (로컬에서 push 할 예정)
 - Create repository 클릭
 
-### 8.2 Git 전역 설정
+### Git 전역 설정
 
 최초 1회 설정합니다.
 
@@ -234,7 +234,7 @@ git config --global core.editor "code --wait"
 git config --list --global
 ```
 
-### 8.3 인증 방식
+### 인증 방식
 
 환경과 인증 방식에 따라 아래 4가지 조합이 있습니다.
 
@@ -249,7 +249,7 @@ git config --list --global
 
 **SSH 방식** 은 초기 설정이 필요하지만 이후 인증이 자동으로 처리됩니다. 여러 GitHub 계정을 사용하는 경우에 유리합니다.
 
-### 8.4 remote 연결 및 최초 push
+### remote 연결 및 최초 push
 
 인증 방식에 따라 remote URL 형식이 다릅니다.
 
@@ -277,7 +277,7 @@ git push -u origin main
 
 ---
 
-## 9. GitHub Pages 설정
+## GitHub Pages 설정
 
 GitHub Pages 는 빌드된 Jupyter Book 을 웹에 공개하는 기능입니다.
 
@@ -304,7 +304,7 @@ https://<username>.github.io/myrepo/
 
 ---
 
-## 10. 로컬 빌드 확인
+## 로컬 빌드 확인
 
 GitHub Actions 배포 전에 로컬에서 먼저 확인합니다.
 
@@ -407,18 +407,18 @@ jobs:
 
 ---
 
-## 11. 일상 워크플로우
+## 일상 워크플로우
 
 문서를 수정하거나 새 문서를 추가할 때마다 아래 순서로 진행합니다.
 
-### 11.1 문서 수정 / 노트북 작업
+### 문서 수정 / 노트북 작업
 
 VSCode 에서 `.md` 파일 또는 `.ipynb` 파일을 편집합니다.
 
 - 마크다운 문서: 내용 수정 후 저장
 - 노트북: 셀 실행 후 `Ctrl+S` 로 출력 포함 저장
 
-### 11.2 로컬 빌드 확인
+### 로컬 빌드 확인
 
 #### Windows + WinPython
 
@@ -437,7 +437,7 @@ jupyter-book build docs/
 explorer.exe docs/_build/html/index.html
 ```
 
-### 11.3 clean 옵션 사용 시점
+### clean 옵션 사용 시점
 
 `jupyter-book clean docs/` 는 `docs/_build/` 폴더를 삭제하여 처음부터 다시 빌드합니다.
 
@@ -456,7 +456,7 @@ jupyter-book clean docs/
 jupyter-book build docs/
 ```
 
-### 11.4 커밋 및 푸시
+### 커밋 및 푸시
 
 로컬에서 확인 후 GitHub 에 push 합니다.
 
@@ -466,7 +466,7 @@ git commit -m "docs: 변경 내용 요약"
 git push origin main
 ```
 
-### 11.5 배포 확인
+### 배포 확인
 
 push 후 GitHub Actions 가 자동으로 빌드 및 배포합니다.
 

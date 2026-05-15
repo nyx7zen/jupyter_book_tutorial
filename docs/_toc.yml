@@ -1,11 +1,13 @@
 format: jb-article
 root: intro
 
+options:
+  numbered: true
+
 sections:
   - file: contents/doc-01-setup
-    sections:
-      - file: contents/git-01-setup-https
-      - file: contents/git-02-setup-ssh
+  - file: contents/git-01-setup-https
+  - file: contents/git-02-setup-ssh
   - file: contents/doc-02-section
   - file: contents/doc-03-chapter
   - file: contents/doc-04-new-project

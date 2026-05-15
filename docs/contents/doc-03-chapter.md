@@ -1,8 +1,8 @@
 # 북 튜토리얼 (챕터와 섹션 구조)
 
-## 1. 개요
+## 개요
 
-### 1.1 이 문서의 목적
+### 이 문서의 목적
 
 챕터와 섹션으로 구성된 Jupyter Book 북을 작성하는 방법을 설명합니다.
 섹션 구조와의 차이점을 중심으로 설명하며, 동일한 내용은 {doc}`doc-02-section` 을 참고하세요.
@@ -10,7 +10,7 @@
 > 이 튜토리얼은 **Jupyter Book v1 (1.0.4)** 기준으로 작성되었습니다.
 > 버전 설치 및 v1/v2 차이점은 {doc}`doc-01-setup` 을 참고하세요.
 
-### 1.2 doc-02 와의 관계
+### doc-02 와의 관계
 
 doc-02 에서 다룬 내용 중 아래 3가지만 다릅니다.
 
@@ -20,7 +20,7 @@ doc-02 에서 다룬 내용 중 아래 3가지만 다릅니다.
 
 src 코드, 마크다운 문서 작성법, 노트북 작성법, 빌드 및 배포 방법은 doc-02 와 동일합니다.
 
-### 1.3 완성 후 폴더 구조
+### 완성 후 폴더 구조
 
 ```
 myrepo/
@@ -49,7 +49,7 @@ myrepo/
 └── README.md
 ```
 
-### 1.4 완성 후 사이드바 구조
+### 완성 후 사이드바 구조
 
 ```
 Jupyter Book 튜토리얼
@@ -69,9 +69,9 @@ Jupyter Book 튜토리얼
 
 ---
 
-## 2. 섹션 구조 vs 챕터 + 섹션 구조 비교
+## 섹션 구조 vs 챕터 + 섹션 구조 비교
 
-### 2.1 _toc.yml 구조 비교
+### _toc.yml 구조 비교
 
 **doc-02 — 섹션 구조 (`jb-article`)**
 
@@ -118,7 +118,7 @@ parts:
       - file: contents/notebooks/nb-01-signals
 ```
 
-### 2.2 사이드바 결과 비교
+### 사이드바 결과 비교
 
 **섹션 구조 (jb-article)**
 
@@ -150,9 +150,9 @@ parts:
 
 ---
 
-## 3. 폴더 구조 변경점
+## 폴더 구조 변경점
 
-### 3.1 doc-02 와의 차이
+### doc-02 와의 차이
 
 폴더 구조는 doc-02 와 동일합니다.
 챕터 구분은 `_toc.yml` 의 `parts` 설정으로만 이루어지며,
@@ -163,13 +163,13 @@ parts:
 
 ---
 
-## 4. _config.yml 변경점
+## _config.yml 변경점
 
-### 4.1 doc-02 와 동일한 항목
+### doc-02 와 동일한 항목
 
 ```yaml
 title: "Jupyter Book 튜토리얼"
-author: "Nam"
+author: "nyx7zen"
 execute:
   execute_notebooks: "off"
 kernelspec:
@@ -179,7 +179,7 @@ html:
   use_issues_button: true
 ```
 
-### 4.2 변경 항목
+### 변경 항목
 
 `repository.path_to_book` 은 동일하게 `docs` 로 유지합니다.
 
@@ -194,9 +194,9 @@ repository:
 
 ---
 
-## 5. _toc.yml 변경점
+## _toc.yml 변경점
 
-### 5.1 _toc.yml 주요 키워드
+### _toc.yml 주요 키워드
 
 `format: jb-book` 에서 사용하는 키워드는 아래와 같습니다.
 
@@ -214,7 +214,7 @@ repository:
 | `jb-article` (doc-02) | 섹션만 | `root` + `sections` |
 | `jb-book` (이 문서) | 챕터 + 섹션 | `root` + `parts` + `chapters` |
 
-### 5.2 parts / chapters / sections 계층 구조 설명
+### parts / chapters / sections 계층 구조 설명
 
 | 키 | 역할 |
 |----|------|
@@ -233,7 +233,7 @@ parts
                 └── file (하위 문서 파일)
 ```
 
-### 5.3 예제 _toc.yml 전체
+### 예제 _toc.yml 전체
 
 `docs/_toc.yml` 을 아래 내용으로 교체합니다.
 
@@ -263,9 +263,65 @@ parts:
       - file: contents/notebooks/nb-01-signals
 ```
 
+### 자동 넘버링 (numbered)
+
+`numbered: true` 를 각 `parts` 항목에 추가하면 사이드바와 페이지 제목에 자동으로 번호가 붙습니다.
+
+```yaml
+format: jb-book
+root: intro
+
+parts:
+  - caption: "chapter-01. 환경 설정"
+    numbered: true
+    chapters:
+      - file: contents/doc-01-setup
+        sections:
+          - file: contents/git-01-setup-https
+          - file: contents/git-02-setup-ssh
+
+  - caption: "chapter-02. 마크다운 예제"
+    numbered: true
+    chapters:
+      - file: contents/doc-02-section
+      - file: contents/doc-03-chapter
+
+  - caption: "chapter-03. 활용"
+    numbered: true
+    chapters:
+      - file: contents/doc-04-new-project
+
+  - caption: "chapter-04. 노트북 예제"
+    numbered: true
+    chapters:
+      - file: contents/notebooks/nb-01-signals
+```
+
+적용 결과 (사이드바):
+
+```
+chapter-01. 환경 설정
+  1. 환경 설정 및 프로젝트 생성
+     1.1 GitHub 연동 (HTTPS 방식)
+     1.2 GitHub 연동 (SSH 방식)
+chapter-02. 마크다운 예제
+  2. 문서 튜토리얼 (섹션 구조)
+  3. 북 튜토리얼 (챕터와 섹션 구조)
+chapter-03. 활용
+  4. 새 Jupyter Book 프로젝트 생성
+chapter-04. 노트북 예제
+  5. [예제] 신호 생성 및 시각화
+```
+
+| 항목 | 설명 |
+|------|------|
+| 적용 범위 | 사이드바 + 페이지 `#` 제목 |
+| 마크다운 수정 불필요 | `.md` 파일의 `##`, `###` 수동 번호 제거 후 자동 적용 |
+| `##` 이하 헤딩 | 페이지 내 `##`, `###` 에는 적용되지 않음 |
+
 ---
 
-## 6. 로컬 빌드 및 확인
+## 로컬 빌드 및 확인
 
 doc-02 와 동일합니다. {doc}`doc-02-section` 의 `8. 로컬 빌드 및 확인` 을 참고하세요.
 
@@ -273,6 +329,6 @@ doc-02 와 동일합니다. {doc}`doc-02-section` 의 `8. 로컬 빌드 및 확�
 
 ---
 
-## 7. GitHub push 및 배포 확인
+## GitHub push 및 배포 확인
 
 doc-02 와 동일합니다. {doc}`doc-02-section` 의 `9. GitHub push 및 배포 확인` 을 참고하세요.

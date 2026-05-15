@@ -1,8 +1,8 @@
 # 문서 튜토리얼 (섹션 구조)
 
-## 1. 개요
+## 개요
 
-### 1.1 이 문서의 목적
+### 이 문서의 목적
 
 섹션만으로 구성된 Jupyter Book 문서를 처음부터 완성까지 작성하는 방법을 설명합니다.
 챕터 없이 섹션만 나열하는 구조로, 단순하고 작은 규모의 문서에 적합합니다.
@@ -12,7 +12,7 @@
 > 이 튜토리얼은 **Jupyter Book v1 (1.0.4)** 기준으로 작성되었습니다.
 > 버전 설치 및 v1/v2 차이점은 {doc}`doc-01-setup` 을 참고하세요.
 
-### 1.2 완성 후 폴더 구조
+### 완성 후 폴더 구조
 
 ```
 myrepo/
@@ -57,13 +57,13 @@ Jupyter Book 튜토리얼
 
 ---
 
-## 2. _config.yml 작성
+## _config.yml 작성
 
-### 2.1 _config.yml 역할
+### _config.yml 역할
 
 Jupyter Book 전체의 설정을 담당합니다. 제목, 저자, 실행 방식, GitHub 연동 등을 지정합니다.
 
-### 2.2 주요 설정 항목 설명
+### 주요 설정 항목 설명
 
 | 항목 | 설명 |
 |------|------|
@@ -75,13 +75,13 @@ Jupyter Book 전체의 설정을 담당합니다. 제목, 저자, 실행 방식,
 | `repository.path_to_book` | 레포 루트 기준 book 폴더 경로 |
 | `html.use_repository_button` | 페이지마다 GitHub 링크 버튼 표시 여부 |
 
-### 2.3 예제 _config.yml 전체
+### 예제 _config.yml 전체
 
 `docs/_config.yml` 파일을 생성합니다.
 
 ```yaml
 title: "Jupyter Book 튜토리얼"
-author: "Nam"
+author: "nyx7zen"
 logo: ""
 
 execute:
@@ -105,14 +105,14 @@ html:
 
 ---
 
-## 3. _toc.yml 작성
+## _toc.yml 작성
 
-### 3.1 _toc.yml 역할
+### _toc.yml 역할
 
 사이드바에 표시되는 문서 목차 구조를 정의합니다.
 등록된 순서대로 사이드바에 나타납니다.
 
-### 3.2 _toc.yml 주요 키워드
+### _toc.yml 주요 키워드
 
 `format: jb-article` 에서 사용하는 키워드는 아래와 같습니다.
 
@@ -132,7 +132,7 @@ html:
 | `jb-article` (이 문서) | 섹션만 | `root` + `sections` |
 | `jb-book` | 챕터 + 섹션 | `root` + `parts` + `chapters` |
 
-### 3.3 섹션 구조 개념
+### 섹션 구조 개념
 
 `jb-article` 은 챕터 없이 파일을 직접 나열합니다.
 
@@ -147,7 +147,7 @@ root (intro.md)
 └── [예제] 신호 생성 및 시각화 (notebooks/nb-01-signals.ipynb)
 ```
 
-### 3.4 예제 _toc.yml 전체
+### 예제 _toc.yml 전체
 
 `docs/_toc.yml` 파일을 생성합니다.
 
@@ -166,22 +166,62 @@ sections:
   - file: contents/notebooks/nb-01-signals
 ```
 
-### 3.5 섹션 등록 방법 상세
+### 섹션 등록 방법 상세
 
 - `root` 는 첫 페이지로 표시될 파일을 지정합니다. 확장자 `.md` 는 생략합니다.
 - `sections` 아래에 `file` 로 각 문서를 등록합니다.
 - 경로는 `docs/` 를 기준으로 작성합니다.
 - `.md` 와 `.ipynb` 모두 확장자를 생략합니다.
 
+### 자동 넘버링 (numbered)
+
+`options: numbered: true` 를 추가하면 사이드바와 페이지 제목에 자동으로 번호가 붙습니다.
+
+```yaml
+format: jb-article
+root: intro
+
+options:
+  numbered: true
+
+sections:
+  - file: contents/doc-01-setup
+    sections:
+      - file: contents/git-01-setup-https
+      - file: contents/git-02-setup-ssh
+  - file: contents/doc-02-section
+  - file: contents/doc-03-chapter
+  - file: contents/doc-04-new-project
+  - file: contents/notebooks/nb-01-signals
+```
+
+적용 결과 (사이드바):
+
+```
+1. 환경 설정 및 프로젝트 생성
+   1.1 GitHub 연동 (HTTPS 방식)
+   1.2 GitHub 연동 (SSH 방식)
+2. 문서 튜토리얼 (섹션 구조)
+3. 북 튜토리얼 (챕터와 섹션 구조)
+4. 새 Jupyter Book 프로젝트 생성
+5. [예제] 신호 생성 및 시각화
+```
+
+| 항목 | 설명 |
+|------|------|
+| 적용 범위 | 사이드바 + 페이지 `#` 제목 |
+| 마크다운 수정 불필요 | `.md` 파일의 `##`, `###` 수동 번호는 그대로 유지 |
+| `##` 이하 헤딩 | 페이지 내 `##`, `###` 에는 적용되지 않음 |
+
 ---
 
-## 4. intro.md 작성
+## intro.md 작성
 
-### 4.1 역할
+### 역할
 
 Jupyter Book 의 첫 페이지입니다. `_toc.yml` 의 `root` 에 지정된 파일입니다.
 
-### 4.2 예제 intro.md 전체
+### 예제 intro.md 전체
 
 `docs/intro.md` 파일을 생성합니다.
 
@@ -206,11 +246,11 @@ Jupyter Book 의 첫 페이지입니다. `_toc.yml` 의 `root` 에 지정된 파
 
 ---
 
-## 5. src 코드 작성
+## src 코드 작성
 
 노트북에서 import 할 Python 코드를 먼저 작성합니다.
 
-### 5.1 __init__.py
+### __init__.py
 
 `src/__init__.py` 파일을 생성합니다. 내용은 비워도 됩니다.
 
@@ -224,7 +264,7 @@ Jupyter Book 의 첫 페이지입니다. `_toc.yml` 의 `root` 에 지정된 파
 - 이 파일이 없으면 `from src.signals import ...` 와 같은 import 가 동작하지 않습니다.
 - 내용은 비워도 되며, 패키지 수준의 초기화 코드가 필요한 경우에만 내용을 추가합니다.
 
-### 5.2 signals.py
+### signals.py
 
 `src/signals.py` 파일을 생성합니다.
 
@@ -299,7 +339,7 @@ def generate_composite(freq1: float = 1.0, freq2: float = 3.0,
     return x, y
 ```
 
-### 5.3 plotter.py
+### plotter.py
 
 `src/plotter.py` 파일을 생성합니다.
 
@@ -373,14 +413,14 @@ def plot_with_noise(x: np.ndarray, y_clean: np.ndarray, y_noisy: np.ndarray,
 
 ---
 
-## 6. 마크다운 문서 작성
+## 마크다운 문서 작성
 
-### 6.1 MyST Markdown 개요
+### MyST Markdown 개요
 
 Jupyter Book 은 MyST (Markedly Structured Text) Markdown 을 사용합니다.
 일반 Markdown 문법에 수식, callout, 크로스 레퍼런스 등이 추가된 확장 문법입니다.
 
-### 6.2 제목 / 본문
+### 제목 / 본문
 
 ```markdown
 # 제목 1
@@ -391,7 +431,7 @@ Jupyter Book 은 MyST (Markedly Structured Text) Markdown 을 사용합니다.
 **굵게**, *기울임*, `인라인 코드`
 ```
 
-### 6.3 수식
+### 수식
 
 인라인 수식:
 
@@ -407,7 +447,7 @@ y = \sin(2\pi f t) + \cos(2\pi f t)
 $$
 ```
 
-### 6.4 코드 블록
+### 코드 블록
 
 ````markdown
 ```python
@@ -416,7 +456,7 @@ x = np.linspace(0, 1, 100)
 ```
 ````
 
-### 6.5 callout
+### callout
 
 ```markdown
 :::{note}
@@ -432,7 +472,7 @@ x = np.linspace(0, 1, 100)
 :::
 ```
 
-### 6.6 크로스 레퍼런스
+### 크로스 레퍼런스
 
 다른 문서로 링크:
 
@@ -449,19 +489,19 @@ x = np.linspace(0, 1, 100)
 {ref}`section-label` 을 참고하세요.
 ```
 
-### 6.7 예제 doc1.md 전체
+### 예제 doc1.md 전체
 
 `docs/contents/doc-01-setup.md` 는 {doc}`doc-01-setup` 을 참고하세요.
 
-### 6.8 예제 doc2.md 전체
+### 예제 doc2.md 전체
 
 추가 문서가 필요한 경우 `docs/contents/` 아래에 동일한 방식으로 작성합니다.
 
 ---
 
-## 7. Jupyter 노트북 작성
+## Jupyter 노트북 작성
 
-### 7.1 노트북 파일 위치
+### 노트북 파일 위치
 
 ```
 docs/contents/notebooks/nb-01-signals.ipynb
@@ -469,7 +509,7 @@ docs/contents/notebooks/nb-01-signals.ipynb
 
 VSCode 에서 해당 경로에 새 파일을 생성합니다.
 
-### 7.2 src 코드 import 방법
+### src 코드 import 방법
 
 노트북은 `docs/contents/notebooks/` 안에 있으므로
 레포 루트의 `src/` 를 찾으려면 경로 설정이 필요합니다.
@@ -489,7 +529,7 @@ sys.path.insert(0, os.path.abspath("../../../"))
 from src.signals import generate_sine
 ```
 
-### 7.3 execute_notebooks 설정
+### execute_notebooks 설정
 
 `_config.yml` 에서 `execute_notebooks: "off"` 로 설정하면
 빌드 시 노트북을 재실행하지 않고 저장된 출력을 그대로 표시합니다.
@@ -501,7 +541,7 @@ Shift+Enter    현재 셀 실행
 Ctrl+S         저장 (출력 포함)
 ```
 
-### 7.4 노트북 셀 구성
+### 노트북 셀 구성
 
 `docs/contents/notebooks/nb-01-signals.ipynb` 를 VSCode 에서 열고
 아래 셀 내용을 순서대로 입력합니다.
@@ -652,9 +692,9 @@ plot_multiple(
 
 ---
 
-## 8. 로컬 빌드 및 확인
+## 로컬 빌드 및 확인
 
-### 8.1 빌드 명령어
+### 빌드 명령어
 
 #### Windows + WinPython
 
@@ -673,7 +713,7 @@ jupyter-book build docs/
 explorer.exe docs/_build/html/index.html
 ```
 
-### 8.2 빌드 오류 시 대처
+### 빌드 오류 시 대처
 
 ```bash
 # 캐시 삭제 후 재빌드
@@ -693,9 +733,9 @@ jupyter-book build docs/ --verbose
 
 ---
 
-## 9. GitHub push 및 배포 확인
+## GitHub push 및 배포 확인
 
-### 9.1 push 명령어
+### push 명령어
 
 ```bash
 git add .
@@ -703,7 +743,7 @@ git commit -m "add section tutorial"
 git push origin main
 ```
 
-### 9.2 GitHub Actions 확인
+### GitHub Actions 확인
 
 - GitHub 레포 → Actions 탭
 - `Deploy Jupyter Book` 워크플로우 실행 상태 확인
@@ -711,7 +751,7 @@ git push origin main
 
 > **Actions 권한 오류:** `Permission denied` 오류가 발생하면 `deploy.yml` 에 `permissions: contents: write` 가 있는지 확인합니다.
 
-### 9.3 GitHub Pages 설정 (최초 1회)
+### GitHub Pages 설정 (최초 1회)
 
 Actions 가 성공한 후 GitHub Pages 를 수동으로 활성화해야 합니다.
 
@@ -721,7 +761,7 @@ Actions 가 성공한 후 GitHub Pages 를 수동으로 활성화해야 합니�
 4. Branch: **`gh-pages`** / **`/ (root)`** 선택
 5. **Save** 클릭
 
-### 9.4 GitHub Pages URL 확인
+### GitHub Pages URL 확인
 
 ```
 https://<username>.github.io/myrepo/
